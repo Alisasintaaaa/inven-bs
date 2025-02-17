@@ -95,6 +95,25 @@ class CommodityController extends Controller
     {
         Commodity::create($request->validated());
 
+        // dd($request);
+
+        // $request->validate([
+        //     'item_code' => 'required',
+        //     'name' => 'required',
+        //     'material' => 'required',
+        //     'brand' => 'required', // keterangan is optional
+        //     'year_of_purchase' => 'required',
+        //     'condition' => 'required',
+        //     'quantity' => 'required',
+        //     'price' => 'required',
+        //     'price_per_item' => 'required',
+        //     'note' => 'required',
+        // ]);
+
+        
+        
+        // Commodity::create($request->all());
+
         return to_route('barang.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
@@ -147,23 +166,7 @@ class CommodityController extends Controller
     }
 
     /**
-     * Export commodities data to Excel.
-     */
-    public function export(CommodityExportRequest $request)
-    {
-        $this->authorize('export barang');
-
-        $filename = 'daftar-barang-'.date('d-m-Y');
-
-        return match ($request->extension) {
-            'xlsx' => Excel::download(new CommoditiesExport, $filename.'.xlsx', \Maatwebsite\Excel\Excel::XLSX),
-            'xls' => Excel::download(new CommoditiesExport, $filename.'.xls', \Maatwebsite\Excel\Excel::XLS),
-            'csv' => Excel::download(new CommoditiesExport, $filename.'.csv', \Maatwebsite\Excel\Excel::CSV),
-            'html' => Excel::download(new CommoditiesExport, $filename.'.html', \Maatwebsite\Excel\Excel::HTML),
-        };
-    }
-
-    /**
+    
      * Import commodities data from Excel.
      */
     public function import(CommodityImportRequest $request)

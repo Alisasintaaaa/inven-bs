@@ -20,18 +20,18 @@ class CommoditiesImport implements ToModel, WithHeadingRow, WithUpserts
         $commodity_acquisition = CommodityAcquisition::where('name', $row['asal_perolehan'])->first();
 
         return new Commodity([
-            'item_code' => $row['kode_barang'],
-            'name' => $row['nama_barang'],
-            'brand' => $row['merek'],
-            'material' => $row['bahan'],
-            'commodity_acquisition_id' => $commodity_acquisition->id,
-            'commodity_location_id' => $commodity_location->id,
-            'year_of_purchase' => $row['tahun_pembelian'],
-            'condition' => $this->translateConditionNameToNumber($row['kondisi']),
-            'quantity' => $row['kuantitas'],
-            'price' => $row['harga'],
-            'price_per_item' => $row['harga_satuan'],
-            'note' => $row['keterangan'],
+            'item_code' => $row['kode_barang'] ?? null,
+            'name' => $row['nama_barang'] ?? null,
+            'brand' => $row['merek'] ?? null,
+            'material' => $row['bahan'] ?? null,
+            'commodity_acquisition_id' => $commodity_acquisition->id ?? null,
+            'commodity_location_id' => $commodity_location->id ?? null,
+            'year_of_purchase' => $row['tahun_pembelian'] ?? null,
+            'condition' => $this->translateConditionNameToNumber($row['kondisi'] ?? ''),
+            'quantity' => $row['kuantitas'] ?? 0,
+            'price' => $row['harga'] ?? 0,
+            'price_per_item' => $row['harga_satuan'] ?? 0,
+            'note' => $row['keterangan'] ?? '',
         ]);
     }
 
@@ -40,10 +40,11 @@ class CommoditiesImport implements ToModel, WithHeadingRow, WithUpserts
      */
     public function translateConditionNameToNumber($conditionName)
     {
-        return match ($conditionName) {
-            'Baik' => 1,
-            'Kurang Baik' => 2,
-            'Rusak Berat' => 3,
+        return match (strtolower($conditionName)) {
+            'baik' => 1,
+            'kurang baik' => 2,
+            'rusak berat' => 3,
+            default => 0,
         };
     }
 

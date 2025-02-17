@@ -24,8 +24,8 @@ class UpdateCommodityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'commodity_acquisition_id' => 'required|numeric|exists:commodity_acquisitions,id',
-            'commodity_location_id' => 'required|numeric|exists:commodity_locations,id',
+            // 'commodity_acquisition_id' => 'required|numeric|exists:commodity_acquisitions,id',
+            // 'commodity_location_id' => 'required|numeric|exists:commodity_locations,id',
             'item_code' => 'required|unique:commodities,item_code,'.$this->commodity->id.'|min:3|max:255',
             'name' => 'required|string|min:3|max:255',
             'brand' => 'required|string|min:3|max:255',
@@ -47,13 +47,13 @@ class UpdateCommodityRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'commodity_acquisition_id.required' => 'Kolom asal perolehan wajib diisi!',
-            'commodity_acquisition_id.numeric' => 'Kolom asal perolehan yang dipilih tidak valid!',
-            'commodity_acquisition_id.exists' => 'Kolom asal perolehan yang dipilih tidak valid!',
+            // 'commodity_acquisition_id.required' => 'Kolom asal perolehan wajib diisi!',
+            // 'commodity_acquisition_id.numeric' => 'Kolom asal perolehan yang dipilih tidak valid!',
+            // 'commodity_acquisition_id.exists' => 'Kolom asal perolehan yang dipilih tidak valid!',
 
-            'commodity_location_id.required' => 'Kolom lokasi barang wajib diisi!',
-            'commodity_location_id.numeric' => 'Kolom lokasi barang yang dipilih tidak valid!',
-            'commodity_location_id.exists' => 'Kolom lokasi barang yang dipilih tidak valid!',
+            // 'commodity_location_id.required' => 'Kolom lokasi barang wajib diisi!',
+            // 'commodity_location_id.numeric' => 'Kolom lokasi barang yang dipilih tidak valid!',
+            // 'commodity_location_id.exists' => 'Kolom lokasi barang yang dipilih tidak valid!',
 
             'item_code.required' => 'Kolom kode barang wajib diisi!',
             'item_code.unique' => 'Kode barang sudah digunakan. Pilih kode barang lain.',

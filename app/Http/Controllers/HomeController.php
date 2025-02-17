@@ -28,13 +28,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $commodity_order_by_price = Commodity::orderBy('price', 'DESC')->take(5)->get();
-        $commodity_condition_count = $this->commodityRepository->countCommodityCondition()->map(function ($commodity) {
-            return collect([
-                'condition_name' => $commodity->getConditionName(),
-                'count' => $commodity->count,
-            ]);
-        });
+         /**
+     * Mengambil 5 komoditas dengan harga tertinggi.
+     */
+    $commodity_order_by_price = Commodity::orderBy('price', 'DESC')->take(5)->get();
+
+    /**
+     * Menghitung jumlah komoditas berdasarkan kondisi.
+     */
+    $commodity_condition_count = $this->commodityRepository->countCommodityCondition()->map(function ($commodity) {
+        return collect([
+            'condition_name' => $commodity->getConditionName(),
+            'count' => $commodity->count,
+        ]);
+    });
+
 
         $commodity_counts = [
             'commodity_in_total' => $commodity_condition_count->sum('count') ?? 0,
@@ -44,9 +52,9 @@ class HomeController extends Controller
         ];
 
         $commodity_each_year_of_purchase_count = $this->commodityRepository->countCommodityEachYear();
-        $commodity_each_location_count = CommodityLocation::has('commodities')->withCount('commodities')->get();
-        $commodity_by_commodity_acquisition_count = $this->commodityAcquisitionRepository
-            ->countCommodityByCommodityAcquisition();
+        // $commodity_each_location_count = CommodityLocation::has('commodities')->withCount('commodities')->get();
+        // $commodity_by_commodity_acquisition_count = $this->commodityAcquisitionRepository
+        //     ->countCommodityByCommodityAcquisition();   
         $commodity_by_material_count = $this->commodityRepository->countCommodityByMaterial()->map(function ($commodity) {
             return collect([
                 'name' => $commodity->material,
@@ -69,14 +77,14 @@ class HomeController extends Controller
                 'categories' => $commodity_each_year_of_purchase_count->pluck('year_of_purchase'),
                 'series' => $commodity_each_year_of_purchase_count->pluck('count'),
             ],
-            'commodity_each_location_count' => [
-                'categories' => $commodity_each_location_count->pluck('name'),
-                'series' => $commodity_each_location_count->pluck('commodities_count'),
-            ],
-            'commodity_by_commodity_acquisition_count' => [
-                'categories' => $commodity_by_commodity_acquisition_count->pluck('name'),
-                'series' => $commodity_by_commodity_acquisition_count->pluck('commodities_count'),
-            ],
+            // 'commodity_each_location_count' => [
+            //     'categories' => $commodity_each_location_count->pluck('name'),
+            //     'series' => $commodity_each_location_count->pluck('commodities_count'),
+            // ],
+            // 'commodity_by_commodity_acquisition_count' => [
+            //     'categories' => $commodity_by_commodity_acquisition_count->pluck('name'),
+            //     'series' => $commodity_by_commodity_acquisition_count->pluck('commodities_count'),
+            // ],
             'commodity_by_material_count' => [
                 'categories' => $commodity_by_material_count->pluck('name'),
                 'series' => $commodity_by_material_count->pluck('material_count'),
